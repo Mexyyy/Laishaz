@@ -1,0 +1,1500 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Laishaz Studio – Salon & Spa, Kharghar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --beige: #f5ede0;
+      --beige-dark: #e8d8c4;
+      --brown: #7b4f2e;
+      --brown-dark: #5a3620;
+      --brown-light: #c4956a;
+      --white: #fffdf9;
+      --text: #3a2a1e;
+      --text-light: #8a6a55;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--white);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(255,253,249,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--beige-dark);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 70px;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 600;
+      color: var(--brown-dark); letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--text);
+      font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+      font-weight: 500; transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--brown); }
+    .nav-book-btn {
+      background: var(--brown); color: white;
+      border: none; padding: 0.55rem 1.4rem;
+      font-family: 'Jost', sans-serif; font-size: 0.8rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.3s;
+      border-radius: 2px;
+    }
+    .nav-book-btn:hover { background: var(--brown-dark); }
+
+    /* ── PAGES ── */
+    .page { display: none; padding-top: 70px; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ── HOME ── */
+    .hero {
+      height: calc(100vh - 70px);
+      background: linear-gradient(135deg, var(--beige) 0%, var(--beige-dark) 50%, #d4b896 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237b4f2e' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-tag {
+      font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--brown-light); margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 300; line-height: 1.05;
+      color: var(--brown-dark); margin-bottom: 1.5rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--brown); }
+    .hero p {
+      font-size: 1rem; color: var(--text-light);
+      max-width: 440px; margin: 0 auto 2.5rem; line-height: 1.8;
+    }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; }
+    .btn-primary {
+      background: var(--brown); color: white;
+      padding: 0.85rem 2.2rem; border: none; cursor: pointer;
+      font-family: 'Jost', sans-serif; font-size: 0.85rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: all 0.3s; border-radius: 2px;
+    }
+    .btn-primary:hover { background: var(--brown-dark); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--brown);
+      padding: 0.85rem 2.2rem; border: 1.5px solid var(--brown);
+      cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.85rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: all 0.3s; border-radius: 2px;
+    }
+    .btn-outline:hover { background: var(--brown); color: white; }
+
+    /* Feature strip */
+    .features {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      background: var(--brown-dark); color: white;
+    }
+    .feature-item {
+      padding: 2.5rem 2rem; text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .feature-item:last-child { border-right: none; }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+    .feature-item h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 400; margin-bottom: 0.4rem;
+    }
+    .feature-item p { font-size: 0.8rem; opacity: 0.7; line-height: 1.6; }
+
+    /* Popular services on home */
+    .section { padding: 6rem 8%; }
+    .section-tag {
+      font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--brown-light); margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 300;
+      color: var(--brown-dark); margin-bottom: 1rem; line-height: 1.2;
+    }
+    .section-sub { color: var(--text-light); font-size: 0.95rem; line-height: 1.8; max-width: 500px; }
+
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .service-card {
+      background: var(--beige); border-radius: 4px;
+      padding: 2rem 1.5rem; transition: all 0.3s; cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .service-card:hover {
+      border-color: var(--brown-light);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(123,79,46,0.1);
+    }
+    .service-card .icon { font-size: 2rem; margin-bottom: 1rem; }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 600;
+      color: var(--brown-dark); margin-bottom: 0.5rem;
+    }
+    .service-card p { font-size: 0.83rem; color: var(--text-light); line-height: 1.7; }
+    .service-card .price {
+      display: inline-block; margin-top: 1rem;
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--brown); letter-spacing: 0.05em;
+    }
+
+    /* Testimonials */
+    .testimonials { background: var(--beige); }
+    .testi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .testi-card {
+      background: white; padding: 2rem; border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(123,79,46,0.06);
+    }
+    .stars { color: var(--brown-light); font-size: 0.9rem; margin-bottom: 1rem; }
+    .testi-card p { font-size: 0.9rem; line-height: 1.8; color: var(--text); font-style: italic; margin-bottom: 1.2rem; }
+    .testi-name { font-weight: 500; font-size: 0.85rem; color: var(--brown); }
+
+    /* ── ABOUT ── */
+    .about-hero {
+      background: linear-gradient(to right, var(--beige-dark), var(--beige));
+      padding: 5rem 8%; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .about-hero img { display: none; }
+    .about-visual {
+      width: 100%; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, var(--brown-light), var(--brown));
+      border-radius: 4px; display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem; color: rgba(255,255,255,0.3);
+    }
+    .about-text .section-title { font-size: 2.5rem; }
+    .about-text p { color: var(--text-light); line-height: 1.9; margin-top: 1.2rem; font-size: 0.95rem; }
+    .about-stats { display: flex; gap: 2rem; margin-top: 2rem; }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;
+      color: var(--brown); font-weight: 600;
+    }
+    .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-light); }
+    .team-section { padding: 5rem 8%; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .team-card { text-align: center; }
+    .team-avatar {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--beige-dark), var(--brown-light));
+      margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .team-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--brown-dark); }
+    .team-card p { font-size: 0.8rem; color: var(--text-light); margin-top: 0.3rem; }
+
+    /* ── SERVICES PAGE ── */
+    .services-hero {
+      background: var(--beige); padding: 5rem 8% 3rem; text-align: center;
+    }
+    .services-hero .section-title { font-size: 3rem; }
+    .services-categories { padding: 3rem 8%; }
+    .cat-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    .cat-tab {
+      padding: 0.5rem 1.4rem; border: 1.5px solid var(--beige-dark);
+      background: white; color: var(--text-light); cursor: pointer;
+      font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+      transition: all 0.3s; border-radius: 2px;
+    }
+    .cat-tab.active, .cat-tab:hover {
+      background: var(--brown); color: white; border-color: var(--brown);
+    }
+    .service-list { display: none; }
+    .service-list.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+    .svc-item {
+      padding: 1.8rem; background: var(--beige);
+      border-radius: 4px; border-left: 3px solid var(--brown-light);
+    }
+    .svc-item h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--brown-dark); margin-bottom: 0.4rem; }
+    .svc-item p { font-size: 0.82rem; color: var(--text-light); line-height: 1.7; }
+    .svc-price { font-weight: 500; color: var(--brown); margin-top: 0.8rem; font-size: 0.9rem; }
+
+    /* ── CONTACT ── */
+    .contact-wrapper {
+      display: grid; grid-template-columns: 1fr 1.2fr; min-height: calc(100vh - 70px);
+    }
+    .contact-info {
+      background: var(--brown-dark); color: white; padding: 5rem 4rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .contact-info h2 {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;
+      font-weight: 300; margin-bottom: 2rem; line-height: 1.2;
+    }
+    .contact-detail { display: flex; gap: 1rem; margin-bottom: 1.8rem; align-items: flex-start; }
+    .c-icon { font-size: 1.2rem; margin-top: 0.1rem; opacity: 0.8; }
+    .c-text h4 { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.6; margin-bottom: 0.3rem; }
+    .c-text p { font-size: 0.95rem; line-height: 1.6; }
+    .contact-form-area { padding: 5rem 4rem; background: var(--white); }
+    .contact-form-area h2 {
+      font-family: 'Cormorant Garamond', serif; font-size: 2rem;
+      color: var(--brown-dark); margin-bottom: 2rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block; font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-light); margin-bottom: 0.5rem;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 0.75rem 1rem;
+      border: 1.5px solid var(--beige-dark); background: var(--beige);
+      font-family: 'Jost', sans-serif; font-size: 0.9rem; color: var(--text);
+      border-radius: 2px; outline: none; transition: border-color 0.3s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--brown-light);
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .submit-btn {
+      width: 100%; padding: 1rem; background: var(--brown); color: white;
+      border: none; font-family: 'Jost', sans-serif; font-size: 0.85rem;
+      letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer;
+      transition: background 0.3s; border-radius: 2px; margin-top: 0.5rem;
+    }
+    .submit-btn:hover { background: var(--brown-dark); }
+
+    /* ── BOOKING MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(58,42,30,0.6); backdrop-filter: blur(4px);
+      z-index: 1000; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white; width: 90%; max-width: 560px;
+      border-radius: 6px; overflow: hidden;
+      animation: slideUp 0.35s ease;
+      max-height: 90vh; overflow-y: auto;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-header {
+      background: var(--brown-dark); color: white;
+      padding: 1.8rem 2rem; display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-header h3 {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300;
+    }
+    .modal-close {
+      background: none; border: none; color: white; font-size: 1.5rem;
+      cursor: pointer; opacity: 0.7; transition: opacity 0.2s; line-height: 1;
+    }
+    .modal-close:hover { opacity: 1; }
+    .modal-body { padding: 2rem; }
+    .booking-steps { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+    .step {
+      flex: 1; text-align: center; padding: 0.6rem;
+      font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+      border-bottom: 2px solid var(--beige-dark); color: var(--text-light);
+    }
+    .step.active { border-color: var(--brown); color: var(--brown); font-weight: 500; }
+    .step.done { border-color: var(--brown-light); color: var(--brown-light); }
+    .booking-step-content { display: none; }
+    .booking-step-content.active { display: block; }
+    .service-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .svc-option {
+      padding: 1rem; border: 1.5px solid var(--beige-dark);
+      border-radius: 4px; cursor: pointer; transition: all 0.25s;
+      text-align: center;
+    }
+    .svc-option:hover, .svc-option.selected {
+      border-color: var(--brown); background: var(--beige);
+    }
+    .svc-option .svc-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; color: var(--brown-dark); }
+    .svc-option .svc-p { font-size: 0.78rem; color: var(--brown-light); margin-top: 0.2rem; }
+    .time-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1.5rem; }
+    .time-slot {
+      padding: 0.6rem; text-align: center; border: 1.5px solid var(--beige-dark);
+      border-radius: 4px; cursor: pointer; font-size: 0.82rem; transition: all 0.25s;
+    }
+    .time-slot:hover, .time-slot.selected { border-color: var(--brown); background: var(--beige); color: var(--brown); }
+    .time-slot.unavailable { opacity: 0.4; cursor: not-allowed; text-decoration: line-through; }
+    .booking-nav { display: flex; gap: 1rem; margin-top: 1.5rem; }
+    .btn-back {
+      flex: 1; padding: 0.85rem; border: 1.5px solid var(--beige-dark);
+      background: white; cursor: pointer; font-family: 'Jost', sans-serif;
+      font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: all 0.3s; border-radius: 2px; color: var(--text);
+    }
+    .btn-back:hover { border-color: var(--brown); color: var(--brown); }
+    .btn-next {
+      flex: 2; padding: 0.85rem; background: var(--brown); color: white;
+      border: none; cursor: pointer; font-family: 'Jost', sans-serif;
+      font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: background 0.3s; border-radius: 2px;
+    }
+    .btn-next:hover { background: var(--brown-dark); }
+    .confirmation-box {
+      background: var(--beige); border-radius: 4px; padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .conf-row { display: flex; justify-content: space-between; padding: 0.5rem 0;
+      border-bottom: 1px solid var(--beige-dark); font-size: 0.9rem;
+    }
+    .conf-row:last-child { border-bottom: none; }
+    .conf-row span:first-child { color: var(--text-light); }
+    .conf-row span:last-child { font-weight: 500; color: var(--brown-dark); }
+    .success-msg { text-align: center; padding: 2rem 1rem; }
+    .success-msg .checkmark { font-size: 3rem; margin-bottom: 1rem; }
+    .success-msg h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--brown-dark); margin-bottom: 0.5rem; }
+    .success-msg p { color: var(--text-light); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ── ADMIN LOGIN ── */
+    .admin-login-page {
+      min-height: calc(100vh - 70px);
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--beige) 0%, var(--beige-dark) 100%);
+    }
+    .login-card {
+      background: white; padding: 3rem; border-radius: 6px;
+      width: 380px; box-shadow: 0 20px 60px rgba(123,79,46,0.12);
+    }
+    .login-card h2 {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.8rem;
+      color: var(--brown-dark); margin-bottom: 0.3rem;
+    }
+    .login-card p { font-size: 0.83rem; color: var(--text-light); margin-bottom: 2rem; }
+    .login-error { color: #c0392b; font-size: 0.83rem; margin-top: -0.5rem; margin-bottom: 1rem; display: none; }
+
+    /* ── ADMIN DASHBOARD ── */
+    .admin-dashboard { display: none; padding: 2rem 4%; }
+    .admin-dashboard.visible { display: block; }
+    .admin-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 2rem; padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--beige-dark);
+    }
+    .admin-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--brown-dark); }
+    .admin-logout {
+      padding: 0.5rem 1.2rem; background: transparent; color: var(--brown);
+      border: 1.5px solid var(--brown); cursor: pointer; font-family: 'Jost', sans-serif;
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: all 0.3s; border-radius: 2px;
+    }
+    .admin-logout:hover { background: var(--brown); color: white; }
+    .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .admin-stat {
+      background: var(--beige); border-radius: 4px; padding: 1.5rem;
+      border-left: 3px solid var(--brown-light);
+    }
+    .admin-stat .num {
+      font-family: 'Cormorant Garamond', serif; font-size: 2.2rem;
+      color: var(--brown); font-weight: 600;
+    }
+    .admin-stat .lbl { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); margin-top: 0.2rem; }
+    .admin-filters { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
+    .filter-btn {
+      padding: 0.45rem 1.1rem; border: 1.5px solid var(--beige-dark);
+      background: white; cursor: pointer; font-size: 0.8rem; letter-spacing: 0.08em;
+      text-transform: uppercase; transition: all 0.3s; border-radius: 2px; color: var(--text-light);
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--brown); color: white; border-color: var(--brown); }
+    .appt-table { width: 100%; border-collapse: collapse; background: white; border-radius: 6px; overflow: hidden; box-shadow: 0 4px 20px rgba(123,79,46,0.06); }
+    .appt-table th {
+      background: var(--brown-dark); color: white; padding: 1rem 1.2rem;
+      text-align: left; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 400;
+    }
+    .appt-table td { padding: 1rem 1.2rem; font-size: 0.88rem; border-bottom: 1px solid var(--beige); }
+    .appt-table tr:last-child td { border-bottom: none; }
+    .appt-table tr:hover td { background: var(--beige); }
+    .badge {
+      display: inline-block; padding: 0.2rem 0.7rem; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em;
+    }
+    .badge-pending { background: #fef3cd; color: #856404; }
+    .badge-confirmed { background: #d1e7dd; color: #0a5232; }
+    .badge-done { background: #e2e3e5; color: #383d41; }
+    .action-btn {
+      padding: 0.3rem 0.8rem; border-radius: 2px; font-size: 0.75rem;
+      cursor: pointer; border: none; font-family: 'Jost', sans-serif;
+      transition: all 0.2s; margin-right: 0.3rem;
+    }
+    .btn-confirm { background: var(--brown-light); color: white; }
+    .btn-confirm:hover { background: var(--brown); }
+    .btn-done { background: #6c757d; color: white; }
+    .btn-done:hover { background: #495057; }
+    .btn-delete { background: #dc3545; color: white; }
+    .btn-delete:hover { background: #c82333; }
+    .empty-state { text-align: center; padding: 3rem; color: var(--text-light); }
+    .empty-state .ei { font-size: 2.5rem; margin-bottom: 0.8rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brown-dark); color: white;
+      padding: 3rem 8%; display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+    }
+    footer h4 {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;
+      font-weight: 400; margin-bottom: 1rem;
+    }
+    footer p, footer a {
+      font-size: 0.83rem; opacity: 0.7; line-height: 1.9;
+      text-decoration: none; color: white; display: block;
+    }
+    footer a:hover { opacity: 1; }
+    .footer-bottom {
+      background: #3a2010; color: white; opacity: 0.6;
+      text-align: center; padding: 1rem; font-size: 0.78rem;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+      background: var(--brown-dark); color: white; padding: 1rem 1.5rem;
+      border-radius: 4px; font-size: 0.88rem; transform: translateY(100px);
+      opacity: 0; transition: all 0.4s; max-width: 300px; line-height: 1.5;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 768px) {
+      .features { grid-template-columns: 1fr; }
+      .feature-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .about-hero { grid-template-columns: 1fr; gap: 2rem; }
+      .contact-wrapper { grid-template-columns: 1fr; }
+      .contact-info { padding: 3rem 2rem; }
+      .contact-form-area { padding: 3rem 2rem; }
+      footer { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .admin-stats { grid-template-columns: repeat(2, 1fr); }
+      .service-options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Laishaz Studio</div>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="showPage('home', this)">Home</a></li>
+    <li><a href="#" onclick="showPage('about', this)">About</a></li>
+    <li><a href="#" onclick="showPage('services', this)">Services</a></li>
+    <li><a href="#" onclick="showPage('contact', this)">Contact</a></li>
+    <li id="nav-login-li"><a href="#" id="nav-login-link" onclick="handleNavAccountClick(this)">Login</a></li>
+    <li id="nav-admin-li" style="display:none;"><a href="#" onclick="showPage('admin', this)">Admin</a></li>
+  </ul>
+  <button class="nav-book-btn" onclick="openBooking()">Book Now</button>
+</nav>
+
+<!-- ════════════ HOME PAGE ════════════ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-tag">✦ Navi Mumbai's Premier Salon ✦</p>
+      <h1>Where Beauty<br><em>Meets Artistry</em></h1>
+      <p>A sanctuary of style in the heart of Kharghar. Experience personalized beauty services crafted just for you.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="openBooking()">Book Appointment</button>
+        <button class="btn-outline" onclick="showPage('services', document.querySelector('.nav-links a:nth-child(3)'))">Our Services</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="features">
+    <div class="feature-item">
+      <div class="feature-icon">✂️</div>
+      <h3>Expert Stylists</h3>
+      <p>Our team of certified professionals deliver precision cuts and flawless styles.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🌿</div>
+      <h3>Premium Products</h3>
+      <p>We use only top-tier, skin-safe and hair-safe products for every service.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">📅</div>
+      <h3>Easy Booking</h3>
+      <p>Book your appointment online in under 2 minutes, anytime from anywhere.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <p class="section-tag">What We Offer</p>
+    <h2 class="section-title">Popular Services</h2>
+    <p class="section-sub">From relaxing spa treatments to stunning hair transformations — we do it all under one roof.</p>
+    <div class="services-grid">
+      <div class="service-card" onclick="openBooking()">
+        <div class="icon">💇‍♀️</div>
+        <h3>Hair Styling</h3>
+        <p>Cuts, blowouts, straightening, curling, and everything in between for all hair types.</p>
+        <span class="price">Starting ₹299</span>
+      </div>
+      <div class="service-card" onclick="openBooking()">
+        <div class="icon">🎨</div>
+        <h3>Hair Coloring</h3>
+        <p>Global color, highlights, balayage, ombre — bold or subtle, we make it perfect.</p>
+        <span class="price">Starting ₹799</span>
+      </div>
+      <div class="service-card" onclick="openBooking()">
+        <div class="icon">💅</div>
+        <h3>Nail Art & Care</h3>
+        <p>Manicure, pedicure, gel nails, nail extensions, and creative nail art designs.</p>
+        <span class="price">Starting ₹249</span>
+      </div>
+      <div class="service-card" onclick="openBooking()">
+        <div class="icon">✨</div>
+        <h3>Facials & Skincare</h3>
+        <p>Rejuvenating facials, clean-ups, bleach, and advanced skin treatments.</p>
+        <span class="price">Starting ₹399</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section testimonials">
+    <p class="section-tag">Happy Clients</p>
+    <h2 class="section-title">What They Say</h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Absolutely loved my hair color at Laishaz Studio! The stylist understood exactly what I wanted. I'll definitely be coming back."</p>
+        <span class="testi-name">— Priya Sharma, Kharghar</span>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"Best facial I've ever had. My skin looked absolutely glowing afterwards. The staff is so warm and professional!"</p>
+        <span class="testi-name">— Anjali Mehta, Sector 7</span>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>"The nail art here is stunning. They're very detailed and creative. The salon is so clean and beautifully done too."</p>
+        <span class="testi-name">— Sneha Kulkarni, Panvel</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>
+      <h4>Laishaz Studio</h4>
+      <p>Your trusted beauty destination in Navi Mumbai. We believe every client deserves to look and feel extraordinary.</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a href="#" onclick="showPage('home', null)">Home</a>
+      <a href="#" onclick="showPage('about', null)">About</a>
+      <a href="#" onclick="showPage('services', null)">Services</a>
+      <a href="#" onclick="showPage('contact', null)">Contact</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Kharghar, Navi Mumbai</p>
+      <p>Maharashtra, India</p>
+      <p>+91 98XXX XXXXX</p>
+      <p>hello@laishazsalon.in</p>
+    </div>
+  </footer>
+  <div class="footer-bottom">© 2025 Laishaz Studio. All rights reserved.</div>
+</div>
+
+<!-- ════════════ ABOUT PAGE ════════════ -->
+<div id="page-about" class="page">
+  <div class="about-hero">
+    <div>
+      <p class="section-tag">Our Story</p>
+      <h2 class="section-title">Born from a<br><em style="font-style:italic; color:var(--brown)">Passion for Beauty</em></h2>
+      <p>Laishaz Studio was founded with one simple belief: every woman deserves to feel beautiful, confident, and cared for. Located in the heart of Kharghar, Navi Mumbai, we have been serving our community with premium salon services.</p>
+      <p>Our team of skilled professionals bring years of experience and a deep love for their craft. We use only the finest products to ensure your hair, skin, and nails receive the best possible care.</p>
+      <div class="about-stats">
+        <div class="stat"><div class="stat-num">5+</div><div class="stat-label">Years Serving</div></div>
+        <div class="stat"><div class="stat-num">2K+</div><div class="stat-label">Happy Clients</div></div>
+        <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Services</div></div>
+      </div>
+    </div>
+    <div class="about-visual">✦</div>
+  </div>
+
+  <div class="team-section">
+    <p class="section-tag">Meet Our Team</p>
+    <h2 class="section-title">The Artists Behind the Magic</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👩</div>
+        <h4>Laisha Sharma</h4>
+        <p>Founder & Head Stylist</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👩‍🦱</div>
+        <h4>Naina Patil</h4>
+        <p>Hair Color Specialist</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👱‍♀️</div>
+        <h4>Riya Joshi</h4>
+        <p>Skincare Expert</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">👩‍🦰</div>
+        <h4>Pooja Desai</h4>
+        <p>Nail Art Artist</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <h4>Laishaz Studio</h4>
+      <p>Your trusted beauty destination in Navi Mumbai.</p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <a href="#" onclick="showPage('home', null)">Home</a>
+      <a href="#" onclick="showPage('services', null)">Services</a>
+      <a href="#" onclick="showPage('contact', null)">Contact</a>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Kharghar, Navi Mumbai</p>
+      <p>+91 98XXX XXXXX</p>
+    </div>
+  </footer>
+  <div class="footer-bottom">© 2025 Laishaz Studio. All rights reserved.</div>
+</div>
+
+<!-- ════════════ SERVICES PAGE ════════════ -->
+<div id="page-services" class="page">
+  <div class="services-hero">
+    <p class="section-tag">What We Offer</p>
+    <h2 class="section-title">Our Services</h2>
+    <p style="color:var(--text-light); max-width:500px; margin:0 auto; line-height:1.8;">Explore our wide range of premium beauty services, each performed with skill and care.</p>
+  </div>
+
+  <div class="services-categories">
+    <div class="cat-tabs">
+      <button class="cat-tab active" onclick="showCat('hair', this)">💇 Hair</button>
+      <button class="cat-tab" onclick="showCat('skin', this)">✨ Skincare</button>
+      <button class="cat-tab" onclick="showCat('nails', this)">💅 Nails</button>
+      <button class="cat-tab" onclick="showCat('makeup', this)">💄 Makeup</button>
+      <button class="cat-tab" onclick="showCat('spa', this)">🌿 Spa & Wellness</button>
+    </div>
+
+    <div id="cat-hair" class="service-list active">
+      <div class="svc-item"><h4>Haircut & Styling</h4><p>Precision cut tailored to your face shape and preference. Includes wash and blowdry.</p><div class="svc-price">₹299 – ₹599</div></div>
+      <div class="svc-item"><h4>Global Hair Color</h4><p>Full head color transformation using premium ammonia-free shades.</p><div class="svc-price">₹799 – ₹1,999</div></div>
+      <div class="svc-item"><h4>Highlights & Balayage</h4><p>Natural-looking highlights or hand-painted balayage for a sun-kissed look.</p><div class="svc-price">₹1,200 – ₹3,000</div></div>
+      <div class="svc-item"><h4>Keratin Treatment</h4><p>Long-lasting smoothing treatment for frizz-free, silky straight hair.</p><div class="svc-price">₹2,500 – ₹5,000</div></div>
+      <div class="svc-item"><h4>Hair Spa</h4><p>Deep conditioning treatment to nourish, strengthen, and restore shine.</p><div class="svc-price">₹499 – ₹999</div></div>
+      <div class="svc-item"><h4>Blowdry & Ironing</h4><p>Professional blowdry or flat-iron styling for any occasion.</p><div class="svc-price">₹299 – ₹499</div></div>
+    </div>
+
+    <div id="cat-skin" class="service-list">
+      <div class="svc-item"><h4>Basic Facial</h4><p>Deep cleansing and moisturizing facial for refreshed, glowing skin.</p><div class="svc-price">₹399 – ₹699</div></div>
+      <div class="svc-item"><h4>Advanced Facial</h4><p>Anti-aging or brightening advanced facial using premium serums.</p><div class="svc-price">₹899 – ₹1,800</div></div>
+      <div class="svc-item"><h4>Clean-Up</h4><p>Quick and effective skin clean-up for instant freshness.</p><div class="svc-price">₹299 – ₹499</div></div>
+      <div class="svc-item"><h4>Bleach</h4><p>Face or full body bleach to lighten skin tone and remove tan.</p><div class="svc-price">₹199 – ₹899</div></div>
+      <div class="svc-item"><h4>Threading & Waxing</h4><p>Precision eyebrow threading and body waxing services.</p><div class="svc-price">₹50 – ₹499</div></div>
+    </div>
+
+    <div id="cat-nails" class="service-list">
+      <div class="svc-item"><h4>Manicure</h4><p>Classic or spa manicure with nail shaping, cuticle care, and polish.</p><div class="svc-price">₹249 – ₹599</div></div>
+      <div class="svc-item"><h4>Pedicure</h4><p>Relaxing pedicure with scrub, massage, and polish for soft feet.</p><div class="svc-price">₹349 – ₹799</div></div>
+      <div class="svc-item"><h4>Gel Nails</h4><p>Long-lasting gel polish or builder gel for a flawless finish.</p><div class="svc-price">₹699 – ₹1,299</div></div>
+      <div class="svc-item"><h4>Nail Extensions</h4><p>Acrylic or gel nail extensions in your desired length and shape.</p><div class="svc-price">₹999 – ₹1,999</div></div>
+      <div class="svc-item"><h4>Nail Art</h4><p>Creative nail art designs — from minimalist to elaborate. Fully custom.</p><div class="svc-price">₹299 – ₹899</div></div>
+    </div>
+
+    <div id="cat-makeup" class="service-list">
+      <div class="svc-item"><h4>Party Makeup</h4><p>Glamorous makeup looks for parties, events, and special occasions.</p><div class="svc-price">₹999 – ₹2,499</div></div>
+      <div class="svc-item"><h4>Bridal Makeup</h4><p>Complete bridal look including makeup, hair, and draping.</p><div class="svc-price">₹5,000 – ₹20,000</div></div>
+      <div class="svc-item"><h4>Saree Draping</h4><p>Expert saree draping in various styles for all occasions.</p><div class="svc-price">₹499 – ₹999</div></div>
+    </div>
+
+    <div id="cat-spa" class="service-list">
+      <div class="svc-item"><h4>Body Massage</h4><p>Relaxing full body massage with aromatic oils for stress relief.</p><div class="svc-price">₹999 – ₹2,499</div></div>
+      <div class="svc-item"><h4>Head Massage</h4><p>Traditional Champi (head massage) for relaxation and scalp health.</p><div class="svc-price">₹299 – ₹599</div></div>
+      <div class="svc-item"><h4>Body Polishing</h4><p>Exfoliating body scrub and polish for smooth, glowing skin.</p><div class="svc-price">₹1,299 – ₹2,499</div></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding: 2rem 0 5rem;">
+    <button class="btn-primary" onclick="openBooking()">Book Any Service</button>
+  </div>
+
+  <footer>
+    <div><h4>Laishaz Studio</h4><p>Your trusted beauty destination in Navi Mumbai.</p></div>
+    <div><h4>Quick Links</h4><a href="#" onclick="showPage('home', null)">Home</a><a href="#" onclick="showPage('about', null)">About</a><a href="#" onclick="showPage('contact', null)">Contact</a></div>
+    <div><h4>Contact</h4><p>Kharghar, Navi Mumbai</p><p>+91 98XXX XXXXX</p></div>
+  </footer>
+  <div class="footer-bottom">© 2025 Laishaz Studio. All rights reserved.</div>
+</div>
+
+<!-- ════════════ CONTACT PAGE ════════════ -->
+<div id="page-contact" class="page">
+  <div class="contact-wrapper">
+    <div class="contact-info">
+      <h2>Get in Touch<br>With Us</h2>
+      <div class="contact-detail">
+        <div class="c-icon">📍</div>
+        <div class="c-text"><h4>Address</h4><p>Kharghar, Navi Mumbai<br>Maharashtra – 410210</p></div>
+      </div>
+      <div class="contact-detail">
+        <div class="c-icon">📞</div>
+        <div class="c-text"><h4>Phone</h4><p>+91 98XXX XXXXX</p></div>
+      </div>
+      <div class="contact-detail">
+        <div class="c-icon">✉️</div>
+        <div class="c-text"><h4>Email</h4><p>hello@laishazsalon.in</p></div>
+      </div>
+      <div class="contact-detail">
+        <div class="c-icon">🕐</div>
+        <div class="c-text"><h4>Hours</h4><p>Mon – Sat: 10:00 AM – 8:00 PM<br>Sunday: 11:00 AM – 6:00 PM</p></div>
+      </div>
+    </div>
+    <div class="contact-form-area">
+      <h2>Send a Message</h2>
+      <div class="form-row">
+        <div class="form-group"><label>Your Name</label><input type="text" placeholder="Priya Sharma"/></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+91 XXXXX XXXXX"/></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="you@email.com"/></div>
+      <div class="form-group">
+        <label>Subject</label>
+        <select>
+          <option>General Inquiry</option>
+          <option>Book Appointment</option>
+          <option>Bridal Package</option>
+          <option>Feedback</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Message</label><textarea placeholder="Write your message here..."></textarea></div>
+      <button class="submit-btn" onclick="sendContactMsg()">Send Message</button>
+    </div>
+  </div>
+
+  <footer>
+    <div><h4>Laishaz Studio</h4><p>Your trusted beauty destination in Navi Mumbai.</p></div>
+    <div><h4>Quick Links</h4><a href="#" onclick="showPage('home', null)">Home</a><a href="#" onclick="showPage('services', null)">Services</a></div>
+    <div><h4>Hours</h4><p>Mon–Sat: 10AM – 8PM</p><p>Sunday: 11AM – 6PM</p></div>
+  </footer>
+  <div class="footer-bottom">© 2025 Laishaz Studio. All rights reserved.</div>
+</div>
+
+<!-- ════════════ LOGIN PAGE (Customer + Admin) ════════════ -->
+<div id="page-login" class="page">
+  <div class="admin-login-page">
+    <div class="login-card" style="width: 420px; max-width: 95%;">
+      <div style="display:flex; gap:0.5rem; margin-bottom:1.5rem;">
+        <button class="cat-tab active" id="login-tab-customer" onclick="switchLoginTab('customer')" style="flex:1;">Customer</button>
+        <button class="cat-tab" id="login-tab-admin" onclick="switchLoginTab('admin')" style="flex:1;">Admin</button>
+      </div>
+
+      <!-- Customer Login -->
+      <div id="login-customer-panel">
+        <div id="cust-mode-login">
+          <h2>Welcome Back</h2>
+          <p>Sign in to view your appointments and bookings.</p>
+          <div class="form-group"><label>Phone or Email</label><input type="text" id="custLoginId" placeholder="+91 XXXXX XXXXX or you@email.com"/></div>
+          <div class="form-group"><label>Password</label><input type="password" id="custLoginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')customerLogin()"/></div>
+          <p class="login-error" id="custLoginErr">⚠ Invalid login. Please check your details.</p>
+          <button class="submit-btn" onclick="customerLogin()">Sign In</button>
+          <p style="font-size:0.83rem; color:var(--text-light); margin-top:1rem; text-align:center;">
+            New here? <a href="#" onclick="toggleCustMode('signup'); return false;" style="color:var(--brown); font-weight:500;">Create an account</a>
+          </p>
+        </div>
+
+        <div id="cust-mode-signup" style="display:none;">
+          <h2>Create Account</h2>
+          <p>Sign up to book and track your appointments.</p>
+          <div class="form-group"><label>Full Name</label><input type="text" id="custSignName" placeholder="Your name"/></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="custSignPhone" placeholder="+91 XXXXX XXXXX"/></div>
+          <div class="form-group"><label>Email (optional)</label><input type="email" id="custSignEmail" placeholder="you@email.com"/></div>
+          <div class="form-group"><label>Password</label><input type="password" id="custSignPass" placeholder="At least 6 characters" onkeydown="if(event.key==='Enter')customerSignup()"/></div>
+          <p class="login-error" id="custSignErr">⚠ Please fill in all required fields.</p>
+          <button class="submit-btn" onclick="customerSignup()">Create Account</button>
+          <p style="font-size:0.83rem; color:var(--text-light); margin-top:1rem; text-align:center;">
+            Already have an account? <a href="#" onclick="toggleCustMode('login'); return false;" style="color:var(--brown); font-weight:500;">Sign in</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Admin Login -->
+      <div id="login-admin-panel" style="display:none;">
+        <h2>Admin Portal</h2>
+        <p>Enter your credentials to access the dashboard.</p>
+        <div class="form-group"><label>Username</label><input type="text" id="adminUser" placeholder="admin"/></div>
+        <div class="form-group"><label>Password</label><input type="password" id="adminPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()"/></div>
+        <p class="login-error" id="loginErr">⚠ Invalid username or password.</p>
+        <button class="submit-btn" onclick="adminLogin()">Login to Dashboard</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ CUSTOMER ACCOUNT PAGE ════════════ -->
+<div id="page-account" class="page">
+  <div style="padding: 3rem 8%;">
+    <div class="admin-header">
+      <div>
+        <h2 style="font-family:'Cormorant Garamond',serif; font-size:2rem; color:var(--brown-dark);">My Account</h2>
+        <p id="account-greeting" style="color:var(--text-light); font-size:0.9rem; margin-top:0.3rem;"></p>
+      </div>
+      <button class="admin-logout" onclick="customerLogout()">Logout</button>
+    </div>
+
+    <div class="admin-stats">
+      <div class="admin-stat"><div class="num" id="cust-stat-total">0</div><div class="lbl">Total Bookings</div></div>
+      <div class="admin-stat"><div class="num" id="cust-stat-upcoming">0</div><div class="lbl">Upcoming</div></div>
+      <div class="admin-stat"><div class="num" id="cust-stat-completed">0</div><div class="lbl">Completed</div></div>
+      <div class="admin-stat"><div class="num" id="cust-stat-pending">0</div><div class="lbl">Pending</div></div>
+    </div>
+
+    <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:var(--brown-dark); margin: 2rem 0 1rem;">Your Appointments</h3>
+
+    <table class="appt-table" id="cust-appt-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Service</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody id="cust-appt-tbody"></tbody>
+    </table>
+
+    <div style="text-align:center; margin-top:2rem;">
+      <button class="btn-primary" onclick="openBooking()">Book Another Appointment</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ADMIN PAGE ════════════ -->
+<div id="page-admin" class="page">
+
+  <!-- LOGIN PANEL (legacy redirect to login page) -->
+  <div id="admin-login" class="admin-login-page">
+    <div class="login-card">
+      <h2>Admin Portal</h2>
+      <p>Please use the login page to sign in.</p>
+      <button class="submit-btn" onclick="showPage('login', null); switchLoginTab('admin');">Go to Login</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="admin-dash" class="admin-dashboard">
+    <div class="admin-header">
+      <div>
+        <h2>📋 Appointments Dashboard</h2>
+        <p style="color:var(--text-light);font-size:0.85rem;margin-top:0.3rem;">Laishaz Studio — Kharghar, Navi Mumbai</p>
+      </div>
+      <button class="admin-logout" onclick="adminLogout()">Logout</button>
+    </div>
+
+    <div class="admin-stats">
+      <div class="admin-stat"><div class="num" id="stat-total">0</div><div class="lbl">Total Today</div></div>
+      <div class="admin-stat"><div class="num" id="stat-pending">0</div><div class="lbl">Pending</div></div>
+      <div class="admin-stat"><div class="num" id="stat-confirmed">0</div><div class="lbl">Confirmed</div></div>
+      <div class="admin-stat"><div class="num" id="stat-done">0</div><div class="lbl">Completed</div></div>
+    </div>
+
+    <div class="admin-filters">
+      <span style="font-size:0.8rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.08em;">Filter:</span>
+      <button class="filter-btn active" onclick="filterAppts('all', this)">All</button>
+      <button class="filter-btn" onclick="filterAppts('pending', this)">Pending</button>
+      <button class="filter-btn" onclick="filterAppts('confirmed', this)">Confirmed</button>
+      <button class="filter-btn" onclick="filterAppts('done', this)">Completed</button>
+    </div>
+
+    <table class="appt-table" id="appt-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Client Name</th>
+          <th>Phone</th>
+          <th>Service</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="appt-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════ BOOKING MODAL ════════════ -->
+<div class="modal-overlay" id="booking-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Book an Appointment</h3>
+      <button class="modal-close" onclick="closeBooking()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="booking-steps">
+        <div class="step active" id="step-tab-1">Service</div>
+        <div class="step" id="step-tab-2">Date & Time</div>
+        <div class="step" id="step-tab-3">Your Info</div>
+        <div class="step" id="step-tab-4">Confirm</div>
+      </div>
+
+      <!-- Step 1: Service -->
+      <div class="booking-step-content active" id="bs-1">
+        <p style="margin-bottom:1rem;font-size:0.88rem;color:var(--text-light);">Select the service you'd like:</p>
+        <div class="service-options">
+          <div class="svc-option" onclick="selectService(this, 'Hair Styling')"><div class="svc-name">💇 Hair Styling</div><div class="svc-p">From ₹299</div></div>
+          <div class="svc-option" onclick="selectService(this, 'Hair Coloring')"><div class="svc-name">🎨 Hair Coloring</div><div class="svc-p">From ₹799</div></div>
+          <div class="svc-option" onclick="selectService(this, 'Nail Art & Care')"><div class="svc-name">💅 Nail Art</div><div class="svc-p">From ₹249</div></div>
+          <div class="svc-option" onclick="selectService(this, 'Facial & Skincare')"><div class="svc-name">✨ Facial</div><div class="svc-p">From ₹399</div></div>
+          <div class="svc-option" onclick="selectService(this, 'Keratin Treatment')"><div class="svc-name">🌟 Keratin</div><div class="svc-p">From ₹2,500</div></div>
+          <div class="svc-option" onclick="selectService(this, 'Bridal Makeup')"><div class="svc-name">👰 Bridal</div><div class="svc-p">From ₹5,000</div></div>
+          <div class="svc-option" onclick="selectService(this, 'Body Massage')"><div class="svc-name">🌿 Spa</div><div class="svc-p">From ₹999</div></div>
+          <div class="svc-option" onclick="selectService(this, 'Waxing / Threading')"><div class="svc-name">🧖 Waxing</div><div class="svc-p">From ₹50</div></div>
+        </div>
+        <div class="booking-nav">
+          <button class="btn-next" onclick="goStep(2)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Date & Time -->
+      <div class="booking-step-content" id="bs-2">
+        <div class="form-group"><label>Select Date</label><input type="date" id="appt-date" min=""/></div>
+        <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:0.75rem;">Select a time slot:</p>
+        <div class="time-slots">
+          <div class="time-slot" onclick="selectTime(this, '10:00 AM')">10:00 AM</div>
+          <div class="time-slot" onclick="selectTime(this, '10:30 AM')">10:30 AM</div>
+          <div class="time-slot" onclick="selectTime(this, '11:00 AM')">11:00 AM</div>
+          <div class="time-slot" onclick="selectTime(this, '11:30 AM')">11:30 AM</div>
+          <div class="time-slot" onclick="selectTime(this, '12:00 PM')">12:00 PM</div>
+          <div class="time-slot unavailable">12:30 PM</div>
+          <div class="time-slot" onclick="selectTime(this, '2:00 PM')">2:00 PM</div>
+          <div class="time-slot" onclick="selectTime(this, '2:30 PM')">2:30 PM</div>
+          <div class="time-slot" onclick="selectTime(this, '3:00 PM')">3:00 PM</div>
+          <div class="time-slot unavailable">3:30 PM</div>
+          <div class="time-slot" onclick="selectTime(this, '4:00 PM')">4:00 PM</div>
+          <div class="time-slot" onclick="selectTime(this, '4:30 PM')">4:30 PM</div>
+          <div class="time-slot" onclick="selectTime(this, '5:00 PM')">5:00 PM</div>
+          <div class="time-slot" onclick="selectTime(this, '5:30 PM')">5:30 PM</div>
+          <div class="time-slot" onclick="selectTime(this, '6:00 PM')">6:00 PM</div>
+        </div>
+        <div class="booking-nav">
+          <button class="btn-back" onclick="goStep(1)">← Back</button>
+          <button class="btn-next" onclick="goStep(3)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Info -->
+      <div class="booking-step-content" id="bs-3">
+        <div class="form-row">
+          <div class="form-group"><label>Full Name</label><input type="text" id="book-name" placeholder="Your name"/></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="book-phone" placeholder="+91 XXXXX XXXXX"/></div>
+        </div>
+        <div class="form-group"><label>Email (optional)</label><input type="email" id="book-email" placeholder="you@email.com"/></div>
+        <div class="form-group"><label>Special Requests</label><textarea id="book-notes" placeholder="Any notes for the stylist..." style="min-height:80px;"></textarea></div>
+        <div class="booking-nav">
+          <button class="btn-back" onclick="goStep(2)">← Back</button>
+          <button class="btn-next" onclick="goStep(4)">Review →</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Confirm -->
+      <div class="booking-step-content" id="bs-4">
+        <div class="confirmation-box" id="conf-box"></div>
+        <div class="booking-nav">
+          <button class="btn-back" onclick="goStep(3)">← Back</button>
+          <button class="btn-next" onclick="confirmBooking()">✓ Confirm Booking</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="booking-step-content" id="bs-5">
+        <div class="success-msg">
+          <div class="checkmark">✅</div>
+          <h3>Appointment Booked!</h3>
+          <p>Thank you! Your appointment at <strong>Laishaz Studio</strong> has been confirmed. We'll send a reminder before your visit.</p>
+          <button class="btn-primary" style="margin-top:1.5rem;width:100%;" onclick="closeBooking()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── DATA STORE ──
+  let appointments = JSON.parse(localStorage.getItem('laishaz_appts') || '[]');
+  let customers = JSON.parse(localStorage.getItem('laishaz_customers') || '[]');
+  let currentCustomer = JSON.parse(localStorage.getItem('laishaz_current_customer') || 'null');
+  let booking = { service: '', date: '', time: '', name: '', phone: '', email: '', notes: '' };
+  let currentStep = 1;
+  let adminLoggedIn = false;
+  let currentFilter = 'all';
+
+  // ── PAGE NAVIGATION ──
+  function showPage(id, linkEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    if (linkEl) linkEl.classList.add('active');
+    window.scrollTo(0, 0);
+
+    if (id === 'admin') {
+      if (adminLoggedIn) showDash();
+      else showLoginPanel();
+    }
+    if (id === 'account') {
+      renderAccountPage();
+    }
+  }
+
+  // ── NAV ACCOUNT BUTTON ──
+  function handleNavAccountClick(linkEl) {
+    if (currentCustomer) {
+      showPage('account', linkEl);
+    } else {
+      showPage('login', linkEl);
+      switchLoginTab('customer');
+    }
+  }
+
+  function refreshNavLoginLink() {
+    const link = document.getElementById('nav-login-link');
+    if (currentCustomer) {
+      link.textContent = 'My Account';
+    } else {
+      link.textContent = 'Login';
+    }
+  }
+
+  // ── LOGIN PAGE TABS ──
+  function switchLoginTab(which) {
+    document.getElementById('login-tab-customer').classList.toggle('active', which === 'customer');
+    document.getElementById('login-tab-admin').classList.toggle('active', which === 'admin');
+    document.getElementById('login-customer-panel').style.display = which === 'customer' ? '' : 'none';
+    document.getElementById('login-admin-panel').style.display = which === 'admin' ? '' : 'none';
+  }
+
+  function toggleCustMode(mode) {
+    document.getElementById('cust-mode-login').style.display = mode === 'login' ? '' : 'none';
+    document.getElementById('cust-mode-signup').style.display = mode === 'signup' ? '' : 'none';
+    document.getElementById('custLoginErr').style.display = 'none';
+    document.getElementById('custSignErr').style.display = 'none';
+  }
+
+  // ── CUSTOMER AUTH ──
+  function saveCustomers() { localStorage.setItem('laishaz_customers', JSON.stringify(customers)); }
+  function saveCurrentCustomer() {
+    localStorage.setItem('laishaz_current_customer', JSON.stringify(currentCustomer));
+  }
+
+  function customerSignup() {
+    const name = document.getElementById('custSignName').value.trim();
+    const phone = document.getElementById('custSignPhone').value.trim();
+    const email = document.getElementById('custSignEmail').value.trim();
+    const pass = document.getElementById('custSignPass').value;
+    const errEl = document.getElementById('custSignErr');
+
+    if (!name || !phone || !pass) {
+      errEl.textContent = '⚠ Please fill in name, phone, and password.';
+      errEl.style.display = 'block';
+      return;
+    }
+    if (pass.length < 6) {
+      errEl.textContent = '⚠ Password must be at least 6 characters.';
+      errEl.style.display = 'block';
+      return;
+    }
+    const exists = customers.find(c => c.phone === phone || (email && c.email === email));
+    if (exists) {
+      errEl.textContent = '⚠ An account with this phone or email already exists.';
+      errEl.style.display = 'block';
+      return;
+    }
+    const newCust = { id: Date.now(), name, phone, email, password: pass };
+    customers.push(newCust);
+    saveCustomers();
+    currentCustomer = newCust;
+    saveCurrentCustomer();
+    refreshNavLoginLink();
+    showToast('✅ Account created! Welcome, ' + name + '.');
+    document.getElementById('custSignName').value = '';
+    document.getElementById('custSignPhone').value = '';
+    document.getElementById('custSignEmail').value = '';
+    document.getElementById('custSignPass').value = '';
+    errEl.style.display = 'none';
+    showPage('account', null);
+  }
+
+  function customerLogin() {
+    const id = document.getElementById('custLoginId').value.trim();
+    const pass = document.getElementById('custLoginPass').value;
+    const errEl = document.getElementById('custLoginErr');
+
+    const cust = customers.find(c =>
+      (c.phone === id || c.email === id) && c.password === pass
+    );
+    if (!cust) {
+      errEl.textContent = '⚠ Invalid login. Please check your details.';
+      errEl.style.display = 'block';
+      return;
+    }
+    currentCustomer = cust;
+    saveCurrentCustomer();
+    refreshNavLoginLink();
+    document.getElementById('custLoginId').value = '';
+    document.getElementById('custLoginPass').value = '';
+    errEl.style.display = 'none';
+    showToast('✅ Welcome back, ' + cust.name + '!');
+    showPage('account', null);
+  }
+
+  function customerLogout() {
+    currentCustomer = null;
+    saveCurrentCustomer();
+    refreshNavLoginLink();
+    showToast('You have been logged out.');
+    showPage('home', document.querySelector('.nav-links a'));
+  }
+
+  function getCustomerAppointments() {
+    if (!currentCustomer) return [];
+    return appointments.filter(a =>
+      a.customerId === currentCustomer.id ||
+      a.phone === currentCustomer.phone ||
+      (currentCustomer.email && a.email === currentCustomer.email)
+    );
+  }
+
+  function renderAccountPage() {
+    if (!currentCustomer) {
+      showPage('login', null);
+      switchLoginTab('customer');
+      return;
+    }
+    document.getElementById('account-greeting').textContent =
+      'Hello, ' + currentCustomer.name + ' — here are your past and upcoming appointments.';
+
+    const list = getCustomerAppointments();
+    const today = new Date().toISOString().split('T')[0];
+    const total = list.length;
+    const upcoming = list.filter(a => a.date >= today && a.status !== 'done').length;
+    const completed = list.filter(a => a.status === 'done').length;
+    const pending = list.filter(a => a.status === 'pending').length;
+
+    document.getElementById('cust-stat-total').textContent = total;
+    document.getElementById('cust-stat-upcoming').textContent = upcoming;
+    document.getElementById('cust-stat-completed').textContent = completed;
+    document.getElementById('cust-stat-pending').textContent = pending;
+
+    const tbody = document.getElementById('cust-appt-tbody');
+    if (list.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="ei">📭</div><p>You don't have any appointments yet.</p></div></td></tr>`;
+      return;
+    }
+    // Sort: most recent first
+    const sorted = [...list].sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+    tbody.innerHTML = sorted.map((a, i) => {
+      const d = new Date(a.date);
+      const dateStr = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      const badge = a.status === 'pending' ? 'badge-pending' : a.status === 'confirmed' ? 'badge-confirmed' : 'badge-done';
+      const statusLabel = a.status.charAt(0).toUpperCase() + a.status.slice(1);
+      return `
+        <tr>
+          <td>${i + 1}</td>
+          <td><strong>${a.service}</strong></td>
+          <td>${dateStr}</td>
+          <td>${a.time}</td>
+          <td><span class="badge ${badge}">${statusLabel}</span></td>
+          <td style="font-size:0.83rem; color:var(--text-light);">${a.notes || '—'}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  // ── SERVICE CATEGORIES ──
+  function showCat(cat, btn) {
+    document.querySelectorAll('.service-list').forEach(l => l.classList.remove('active'));
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('cat-' + cat).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ── BOOKING MODAL ──
+  function openBooking() {
+    document.getElementById('booking-modal').classList.add('open');
+    currentStep = 1;
+    booking = { service: '', date: '', time: '', name: '', phone: '', email: '', notes: '' };
+    renderStep(1);
+    // Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('appt-date').min = today;
+    document.getElementById('appt-date').value = today;
+    booking.date = today;
+    // Prefill if customer is logged in
+    if (currentCustomer) {
+      document.getElementById('book-name').value = currentCustomer.name || '';
+      document.getElementById('book-phone').value = currentCustomer.phone || '';
+      document.getElementById('book-email').value = currentCustomer.email || '';
+    } else {
+      document.getElementById('book-name').value = '';
+      document.getElementById('book-phone').value = '';
+      document.getElementById('book-email').value = '';
+    }
+    document.getElementById('book-notes').value = '';
+  }
+
+  function closeBooking() {
+    document.getElementById('booking-modal').classList.remove('open');
+    // Reset selections
+    document.querySelectorAll('.svc-option').forEach(o => o.classList.remove('selected'));
+    document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+  }
+
+  function renderStep(n) {
+    for (let i = 1; i <= 5; i++) {
+      document.getElementById('bs-' + i).classList.remove('active');
+      if (i <= 4) {
+        const tab = document.getElementById('step-tab-' + i);
+        tab.classList.remove('active', 'done');
+        if (i === n) tab.classList.add('active');
+        else if (i < n) tab.classList.add('done');
+      }
+    }
+    document.getElementById('bs-' + n).classList.add('active');
+    currentStep = n;
+  }
+
+  function goStep(n) {
+    if (n === 2 && !booking.service) { showToast('Please select a service first.'); return; }
+    if (n === 3 && !booking.time) { showToast('Please select a time slot.'); return; }
+    if (n === 4) {
+      booking.name = document.getElementById('book-name').value.trim();
+      booking.phone = document.getElementById('book-phone').value.trim();
+      booking.email = document.getElementById('book-email').value.trim();
+      booking.notes = document.getElementById('book-notes').value.trim();
+      if (!booking.name) { showToast('Please enter your name.'); return; }
+      if (!booking.phone) { showToast('Please enter your phone number.'); return; }
+      booking.date = document.getElementById('appt-date').value;
+      renderConfirmation();
+    }
+    renderStep(n);
+  }
+
+  function selectService(el, name) {
+    document.querySelectorAll('.svc-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    booking.service = name;
+  }
+
+  function selectTime(el, time) {
+    document.querySelectorAll('.time-slot:not(.unavailable)').forEach(t => t.classList.remove('selected'));
+    el.classList.add('selected');
+    booking.time = time;
+  }
+
+  function renderConfirmation() {
+    const d = new Date(booking.date);
+    const dateStr = d.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('conf-box').innerHTML = `
+      <div class="conf-row"><span>Service</span><span>${booking.service}</span></div>
+      <div class="conf-row"><span>Date</span><span>${dateStr}</span></div>
+      <div class="conf-row"><span>Time</span><span>${booking.time}</span></div>
+      <div class="conf-row"><span>Name</span><span>${booking.name}</span></div>
+      <div class="conf-row"><span>Phone</span><span>${booking.phone}</span></div>
+      ${booking.notes ? `<div class="conf-row"><span>Notes</span><span>${booking.notes}</span></div>` : ''}
+    `;
+  }
+
+  function confirmBooking() {
+    const appt = {
+      id: Date.now(),
+      customerId: currentCustomer ? currentCustomer.id : null,
+      name: booking.name,
+      phone: booking.phone,
+      email: booking.email,
+      service: booking.service,
+      date: booking.date,
+      time: booking.time,
+      notes: booking.notes,
+      status: 'pending'
+    };
+    appointments.unshift(appt);
+    saveAppts();
+    renderStep(5);
+    // Reset booking steps tab display
+    document.querySelectorAll('[id^="step-tab-"]').forEach(t => t.classList.remove('active', 'done'));
+  }
+
+  // ── ADMIN ──
+  function showLoginPanel() {
+    document.getElementById('admin-login').style.display = 'flex';
+    document.getElementById('admin-dash').classList.remove('visible');
+  }
+
+  function showDash() {
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-dash').classList.add('visible');
+    renderDash();
+  }
+
+  const ADMIN_ACCOUNTS = [
+    { username: 'admin', password: 'laishaz2025' },
+    { username: 'gautam', password: 'gautam' }
+  ];
+
+  function adminLogin() {
+    const u = document.getElementById('adminUser').value;
+    const p = document.getElementById('adminPass').value;
+    const match = ADMIN_ACCOUNTS.find(a => a.username === u && a.password === p);
+    if (match) {
+      adminLoggedIn = true;
+      document.getElementById('loginErr').style.display = 'none';
+      document.getElementById('nav-admin-li').style.display = '';
+      showDash();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+    }
+  }
+
+  function adminLogout() {
+    adminLoggedIn = false;
+    document.getElementById('nav-admin-li').style.display = 'none';
+    showLoginPanel();
+    showPage('home', document.querySelector('.nav-links a'));
+  }
+
+  function renderDash() {
+    updateStats();
+    renderTable(currentFilter);
+  }
+
+  function updateStats() {
+    const total = appointments.length;
+    const pending = appointments.filter(a => a.status === 'pending').length;
+    const confirmed = appointments.filter(a => a.status === 'confirmed').length;
+    const done = appointments.filter(a => a.status === 'done').length;
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-pending').textContent = pending;
+    document.getElementById('stat-confirmed').textContent = confirmed;
+    document.getElementById('stat-done').textContent = done;
+  }
+
+  function filterAppts(type, btn) {
+    currentFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderTable(type);
+  }
+
+  function renderTable(filter) {
+    const tbody = document.getElementById('appt-tbody');
+    let list = filter === 'all' ? appointments : appointments.filter(a => a.status === filter);
+
+    if (list.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="ei">📭</div><p>No appointments found.</p></div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map((a, i) => {
+      const d = new Date(a.date);
+      const dateStr = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+      const badge = a.status === 'pending' ? 'badge-pending' : a.status === 'confirmed' ? 'badge-confirmed' : 'badge-done';
+      const statusLabel = a.status.charAt(0).toUpperCase() + a.status.slice(1);
+      return `
+        <tr>
+          <td>${i + 1}</td>
+          <td><strong>${a.name}</strong></td>
+          <td>${a.phone}</td>
+          <td>${a.service}</td>
+          <td>${dateStr}</td>
+          <td>${a.time}</td>
+          <td><span class="badge ${badge}">${statusLabel}</span></td>
+          <td>
+            ${a.status === 'pending' ? `<button class="action-btn btn-confirm" onclick="updateStatus(${a.id}, 'confirmed')">Confirm</button>` : ''}
+            ${a.status === 'confirmed' ? `<button class="action-btn btn-done" onclick="updateStatus(${a.id}, 'done')">Done</button>` : ''}
+            <button class="action-btn btn-delete" onclick="deleteAppt(${a.id})">Delete</button>
+          </td>
+        </tr>`;
+    }).join('');
+  }
+
+  function updateStatus(id, status) {
+    appointments = appointments.map(a => a.id === id ? {...a, status} : a);
+    saveAppts();
+    renderDash();
+    showToast('Appointment updated!');
+  }
+
+  function deleteAppt(id) {
+    if (!confirm('Delete this appointment?')) return;
+    appointments = appointments.filter(a => a.id !== id);
+    saveAppts();
+    renderDash();
+    showToast('Appointment deleted.');
+  }
+
+  function saveAppts() { localStorage.setItem('laishaz_appts', JSON.stringify(appointments)); }
+
+  // ── CONTACT FORM ──
+  function sendContactMsg() { showToast('✅ Message sent! We\'ll be in touch soon.'); }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // Close modal on overlay click
+  document.getElementById('booking-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeBooking();
+  });
+
+  // Set date field default
+  document.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toISOString().split('T')[0];
+    if (document.getElementById('appt-date')) {
+      document.getElementById('appt-date').min = today;
+    }
+    refreshNavLoginLink();
+    // Allow admins to access the admin login via #admin in the URL
+    if (window.location.hash === '#admin') {
+      showPage('login', null);
+      switchLoginTab('admin');
+    }
+  });
+
+  // Also respond to hash changes (e.g. typing /#admin while on the site)
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#admin') {
+      showPage('login', null);
+      switchLoginTab('admin');
+    }
+  });
+</script>
+</body>
+</html>

@@ -507,6 +507,8 @@
     .btn-done:hover { background: #495057; }
     .btn-delete { background: #dc3545; color: white; }
     .btn-delete:hover { background: #c82333; }
+    .btn-whatsapp { background: #25d366; color: white; }
+    .btn-whatsapp:hover { background: #1da851; }
     .empty-state { text-align: center; padding: 3rem; color: var(--text-light); }
     .empty-state .ei { font-size: 2.5rem; margin-bottom: 0.8rem; }
 
@@ -1533,6 +1535,7 @@
           <td>
             ${a.status === 'pending' ? `<button class="action-btn btn-confirm" onclick="updateStatus(${a.id}, 'confirmed')">Confirm</button>` : ''}
             ${a.status === 'confirmed' ? `<button class="action-btn btn-done" onclick="updateStatus(${a.id}, 'done')">Done</button>` : ''}
+            <button class="action-btn btn-whatsapp" onclick="whatsappCustomer('${a.phone}', ${JSON.stringify(a.name)}, ${JSON.stringify(a.service)}, '${a.date}', ${JSON.stringify(a.time)})">WhatsApp</button>
             <button class="action-btn btn-delete" onclick="deleteAppt(${a.id})">Delete</button>
           </td>
         </tr>`;
@@ -1560,6 +1563,22 @@
     } catch (e) {
       showToast('⚠ Could not delete: ' + e.message);
     }
+  }
+
+  // ── WHATSAPP CUSTOMER ──
+  function whatsappCustomer(phone, name, service, date, time) {
+    const cleanPhone = String(phone).replace(/[^0-9]/g, '');
+    const num = cleanPhone.startsWith('91') ? cleanPhone : '91' + cleanPhone;
+    const dateStr = new Date(date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    const msg =
+      'Hi ' + name + '! 👋\n\n' +
+      'This is Laishaz Studio confirming your appointment:\n\n' +
+      '📅 ' + dateStr + '\n' +
+      '⏰ ' + time + '\n' +
+      '💇 ' + service + '\n\n' +
+      'See you soon! Reply if you need to reschedule.\n\n' +
+      '— Laishaz Studio, Kharghar';
+    window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
   }
 
   // ── CONTACT FORM ──

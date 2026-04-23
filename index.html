@@ -58,6 +58,50 @@
     }
     .nav-book-btn:hover { background: var(--brown-dark); }
 
+    .nav-toggle {
+      display: none;
+      background: transparent; border: none; cursor: pointer;
+      padding: 0.4rem; margin-left: 0.5rem;
+    }
+    .nav-toggle span {
+      display: block; width: 24px; height: 2px;
+      background: var(--brown-dark); margin: 5px 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 820px) {
+      nav { padding: 0 5%; }
+      .nav-logo { font-size: 1.3rem; }
+      .nav-toggle { display: block; }
+      .nav-book-btn {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.7rem;
+        margin-left: auto;
+        margin-right: 0.5rem;
+      }
+      .nav-links {
+        position: fixed;
+        top: 70px; left: 0; right: 0;
+        flex-direction: column;
+        background: rgba(255,253,249,0.98);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--beige-dark);
+        gap: 0; padding: 0.5rem 0;
+        max-height: 0; overflow: hidden;
+        transition: max-height 0.35s ease;
+      }
+      .nav-links.open { max-height: 500px; }
+      .nav-links li { width: 100%; }
+      .nav-links a {
+        display: block; padding: 1rem 8%;
+        font-size: 0.95rem;
+        border-bottom: 1px solid var(--beige);
+      }
+    }
+
     /* ── PAGES ── */
     .page { display: none; padding-top: 70px; min-height: 100vh; }
     .page.active { display: block; }
@@ -496,15 +540,18 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Laishaz Studio</div>
-  <ul class="nav-links">
-    <li><a href="#" class="active" onclick="showPage('home', this)">Home</a></li>
-    <li><a href="#" onclick="showPage('about', this)">About</a></li>
-    <li><a href="#" onclick="showPage('services', this)">Services</a></li>
-    <li><a href="#" onclick="showPage('contact', this)">Contact</a></li>
-    <li id="nav-login-li"><a href="#" id="nav-login-link" onclick="handleNavAccountClick(this)">Login</a></li>
-    <li id="nav-admin-li" style="display:none;"><a href="#" onclick="showPage('admin', this)">Admin</a></li>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#" class="active" onclick="showPage('home', this); closeMobileMenu();">Home</a></li>
+    <li><a href="#" onclick="showPage('about', this); closeMobileMenu();">About</a></li>
+    <li><a href="#" onclick="showPage('services', this); closeMobileMenu();">Services</a></li>
+    <li><a href="#" onclick="showPage('contact', this); closeMobileMenu();">Contact</a></li>
+    <li id="nav-login-li"><a href="#" id="nav-login-link" onclick="handleNavAccountClick(this); closeMobileMenu();">Login</a></li>
+    <li id="nav-admin-li" style="display:none;"><a href="#" onclick="showPage('admin', this); closeMobileMenu();">Admin</a></li>
   </ul>
   <button class="nav-book-btn" onclick="openBooking()">Book Now</button>
+  <button class="nav-toggle" id="nav-toggle" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- ════════════ HOME PAGE ════════════ -->
@@ -1053,6 +1100,16 @@
   let currentStep = 1;
   let adminLoggedIn = false;
   let currentFilter = 'all';
+
+  // ── MOBILE MENU ──
+  function toggleMobileMenu() {
+    document.getElementById('nav-links').classList.toggle('open');
+    document.getElementById('nav-toggle').classList.toggle('open');
+  }
+  function closeMobileMenu() {
+    document.getElementById('nav-links').classList.remove('open');
+    document.getElementById('nav-toggle').classList.remove('open');
+  }
 
   // ── PAGE NAVIGATION ──
   function showPage(id, linkEl) {

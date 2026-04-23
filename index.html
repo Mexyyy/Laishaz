@@ -100,6 +100,24 @@
         font-size: 0.95rem;
         border-bottom: 1px solid var(--beige);
       }
+
+      /* Hero & section buttons get breathing room on phones */
+      .hero { padding: 0 1.5rem; }
+      .hero-btns {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0 1rem;
+        max-width: 360px;
+        margin: 0 auto;
+      }
+      .hero-btns .btn-primary,
+      .hero-btns .btn-outline {
+        width: 100%;
+        padding: 0.85rem 1.5rem;
+      }
+
+      /* General section padding so content isn't flush to edges */
+      section, .page > div { padding-left: max(5%, 1.25rem); padding-right: max(5%, 1.25rem); }
     }
 
     /* ── PAGES ── */
@@ -1092,14 +1110,25 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── DATA STORE ──
-  let appointments = JSON.parse(localStorage.getItem('laishaz_appts') || '[]');
-  let customers = JSON.parse(localStorage.getItem('laishaz_customers') || '[]');
+  // ── DATA STORE (server-backed) ──
+  const API = '/api';
+  let appointments = [];
   let currentCustomer = JSON.parse(localStorage.getItem('laishaz_current_customer') || 'null');
   let booking = { service: '', date: '', time: '', name: '', phone: '', email: '', notes: '' };
   let currentStep = 1;
   let adminLoggedIn = false;
   let currentFilter = 'all';
+
+  async function api(path, opts = {}) {
+    const res = await fetch(API + path, {
+      headers: { 'Content-Type': 'application/json' },
+      ...opts,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+  }
 
   // ── MOBILE MENU ──
   function toggleMobileMenu() {
@@ -1163,12 +1192,11 @@
   }
 
   // ── CUSTOMER AUTH ──
-  function saveCustomers() { localStorage.setItem('laishaz_customers', JSON.stringify(customers)); }
   function saveCurrentCustomer() {
     localStorage.setItem('laishaz_current_customer', JSON.stringify(currentCustomer));
   }
 
-  function customerSignup() {
+  async function customerSignup() {
     const name = document.getElementById('custSignName').value.trim();
     const phone = document.getElementById('custSignPhone').value.trim();
     const email = document.getElementById('custSignEmail').value.trim();
@@ -1180,53 +1208,49 @@
       errEl.style.display = 'block';
       return;
     }
-    if (pass.length < 6) {
-      errEl.textContent = '⚠ Password must be at least 6 characters.';
+    try {
+      const data = await api('/customers/signup', {
+        method: 'POST',
+        body: { name, phone, email, password: pass }
+      });
+      currentCustomer = data.customer;
+      saveCurrentCustomer();
+      refreshNavLoginLink();
+      showToast('✅ Account created! Welcome, ' + name + '.');
+      document.getElementById('custSignName').value = '';
+      document.getElementById('custSignPhone').value = '';
+      document.getElementById('custSignEmail').value = '';
+      document.getElementById('custSignPass').value = '';
+      errEl.style.display = 'none';
+      showPage('account', null);
+    } catch (err) {
+      errEl.textContent = '⚠ ' + err.message;
       errEl.style.display = 'block';
-      return;
     }
-    const exists = customers.find(c => c.phone === phone || (email && c.email === email));
-    if (exists) {
-      errEl.textContent = '⚠ An account with this phone or email already exists.';
-      errEl.style.display = 'block';
-      return;
-    }
-    const newCust = { id: Date.now(), name, phone, email, password: pass };
-    customers.push(newCust);
-    saveCustomers();
-    currentCustomer = newCust;
-    saveCurrentCustomer();
-    refreshNavLoginLink();
-    showToast('✅ Account created! Welcome, ' + name + '.');
-    document.getElementById('custSignName').value = '';
-    document.getElementById('custSignPhone').value = '';
-    document.getElementById('custSignEmail').value = '';
-    document.getElementById('custSignPass').value = '';
-    errEl.style.display = 'none';
-    showPage('account', null);
   }
 
-  function customerLogin() {
+  async function customerLogin() {
     const id = document.getElementById('custLoginId').value.trim();
     const pass = document.getElementById('custLoginPass').value;
     const errEl = document.getElementById('custLoginErr');
 
-    const cust = customers.find(c =>
-      (c.phone === id || c.email === id) && c.password === pass
-    );
-    if (!cust) {
-      errEl.textContent = '⚠ Invalid login. Please check your details.';
+    try {
+      const data = await api('/customers/login', {
+        method: 'POST',
+        body: { id, password: pass }
+      });
+      currentCustomer = data.customer;
+      saveCurrentCustomer();
+      refreshNavLoginLink();
+      document.getElementById('custLoginId').value = '';
+      document.getElementById('custLoginPass').value = '';
+      errEl.style.display = 'none';
+      showToast('✅ Welcome back, ' + currentCustomer.name + '!');
+      showPage('account', null);
+    } catch (err) {
+      errEl.textContent = '⚠ ' + err.message;
       errEl.style.display = 'block';
-      return;
     }
-    currentCustomer = cust;
-    saveCurrentCustomer();
-    refreshNavLoginLink();
-    document.getElementById('custLoginId').value = '';
-    document.getElementById('custLoginPass').value = '';
-    errEl.style.display = 'none';
-    showToast('✅ Welcome back, ' + cust.name + '!');
-    showPage('account', null);
   }
 
   function customerLogout() {
@@ -1237,16 +1261,21 @@
     showPage('home', document.querySelector('.nav-links a'));
   }
 
-  function getCustomerAppointments() {
+  async function loadCustomerAppointments() {
     if (!currentCustomer) return [];
-    return appointments.filter(a =>
-      a.customerId === currentCustomer.id ||
-      a.phone === currentCustomer.phone ||
-      (currentCustomer.email && a.email === currentCustomer.email)
-    );
+    const params = new URLSearchParams();
+    if (currentCustomer.id) params.set('customerId', currentCustomer.id);
+    if (currentCustomer.phone) params.set('phone', currentCustomer.phone);
+    if (currentCustomer.email) params.set('email', currentCustomer.email);
+    try {
+      const data = await api('/appointments/customer?' + params.toString());
+      return data.appointments || [];
+    } catch (e) {
+      return [];
+    }
   }
 
-  function renderAccountPage() {
+  async function renderAccountPage() {
     if (!currentCustomer) {
       showPage('login', null);
       switchLoginTab('customer');
@@ -1255,7 +1284,7 @@
     document.getElementById('account-greeting').textContent =
       'Hello, ' + currentCustomer.name + ' — here are your past and upcoming appointments.';
 
-    const list = getCustomerAppointments();
+    const list = await loadCustomerAppointments();
     const today = new Date().toISOString().split('T')[0];
     const total = list.length;
     const upcoming = list.filter(a => a.date >= today && a.status !== 'done').length;
@@ -1385,24 +1414,26 @@
     `;
   }
 
-  function confirmBooking() {
-    const appt = {
-      id: Date.now(),
-      customerId: currentCustomer ? currentCustomer.id : null,
-      name: booking.name,
-      phone: booking.phone,
-      email: booking.email,
-      service: booking.service,
-      date: booking.date,
-      time: booking.time,
-      notes: booking.notes,
-      status: 'pending'
-    };
-    appointments.unshift(appt);
-    saveAppts();
-    renderStep(5);
-    // Reset booking steps tab display
-    document.querySelectorAll('[id^="step-tab-"]').forEach(t => t.classList.remove('active', 'done'));
+  async function confirmBooking() {
+    try {
+      await api('/appointments', {
+        method: 'POST',
+        body: {
+          customerId: currentCustomer ? currentCustomer.id : null,
+          name: booking.name,
+          phone: booking.phone,
+          email: booking.email,
+          service: booking.service,
+          date: booking.date,
+          time: booking.time,
+          notes: booking.notes,
+        }
+      });
+      renderStep(5);
+      document.querySelectorAll('[id^="step-tab-"]').forEach(t => t.classList.remove('active', 'done'));
+    } catch (err) {
+      showToast('⚠ Could not save booking: ' + err.message);
+    }
   }
 
   // ── ADMIN ──
@@ -1411,10 +1442,20 @@
     document.getElementById('admin-dash').classList.remove('visible');
   }
 
-  function showDash() {
+  async function showDash() {
     document.getElementById('admin-login').style.display = 'none';
     document.getElementById('admin-dash').classList.add('visible');
+    await loadAllAppointments();
     renderDash();
+  }
+
+  async function loadAllAppointments() {
+    try {
+      const data = await api('/appointments');
+      appointments = data.appointments || [];
+    } catch (e) {
+      appointments = [];
+    }
   }
 
   const ADMIN_ACCOUNTS = [
@@ -1498,22 +1539,28 @@
     }).join('');
   }
 
-  function updateStatus(id, status) {
-    appointments = appointments.map(a => a.id === id ? {...a, status} : a);
-    saveAppts();
-    renderDash();
-    showToast('Appointment updated!');
+  async function updateStatus(id, status) {
+    try {
+      await api('/appointments/' + id, { method: 'PATCH', body: { status } });
+      await loadAllAppointments();
+      renderDash();
+      showToast('Appointment updated!');
+    } catch (e) {
+      showToast('⚠ Could not update: ' + e.message);
+    }
   }
 
-  function deleteAppt(id) {
+  async function deleteAppt(id) {
     if (!confirm('Delete this appointment?')) return;
-    appointments = appointments.filter(a => a.id !== id);
-    saveAppts();
-    renderDash();
-    showToast('Appointment deleted.');
+    try {
+      await api('/appointments/' + id, { method: 'DELETE' });
+      await loadAllAppointments();
+      renderDash();
+      showToast('Appointment deleted.');
+    } catch (e) {
+      showToast('⚠ Could not delete: ' + e.message);
+    }
   }
-
-  function saveAppts() { localStorage.setItem('laishaz_appts', JSON.stringify(appointments)); }
 
   // ── CONTACT FORM ──
   function sendContactMsg() { showToast('✅ Message sent! We\'ll be in touch soon.'); }
